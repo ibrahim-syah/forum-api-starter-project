@@ -205,7 +205,6 @@ describe('/threads endpoint', () => {
       headers: { Authorization: `Bearer ${responseAuthJson.data.accessToken}` },
     });
     const responseAddCommentJson = JSON.parse(responseAddComment.payload);
-    const commentId = responseAddCommentJson.data.addedComment.id;
 
     // add another comment on the same thread
     const responseAddComment2 = await server.inject({
