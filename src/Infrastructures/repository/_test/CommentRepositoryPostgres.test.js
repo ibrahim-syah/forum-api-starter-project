@@ -140,4 +140,25 @@ describe('CommentRepositoryPostgres', () => {
       expect(result[0].is_delete).toEqual(true);
     });
   });
+
+  describe('function getAllCommentsOfThread', () => {
+    it('should get all available and deleted comments of a thread correctly', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({}); // thread-123
+      await CommentsTableTestHelper.addComment({}); // comment with content, id = comment-123
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-456', content: 'komentar lain', thread: 'thread-123', owner: 'user-123', is_delete: true,
+      }); // deleted comment
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action
+      const comments = await commentRepositoryPostgres.getAllCommentsOfThread('thread-123');
+
+      // Assert
+      expect(comments).toHaveLength(2);
+      expect(comments[0].content).toEqual('sebuah komentar');
+      expect(comments[1].content).toEqual('**komentar telah dihapus**');
+    });
+  });
 });

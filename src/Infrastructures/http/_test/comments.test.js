@@ -292,6 +292,7 @@ describe('/threads endpoint', () => {
     const responseAddCommentJson = JSON.parse(responseAddComment.payload);
     const commentId = responseAddCommentJson.data.addedComment.id;
 
+    // Action
     const response = await server.inject({
       method: 'DELETE',
       url: `/threads/${threadId}/comments/${commentId}`,
