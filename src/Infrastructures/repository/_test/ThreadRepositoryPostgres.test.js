@@ -89,7 +89,7 @@ describe('ThreadRepositoryPostgres', () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // Action
-      const thread = await threadRepositoryPostgres.getThreadById('thread-123', {});
+      const thread = await threadRepositoryPostgres.getThreadById('thread-123');
 
       // Arrange
       expect(thread.id).toEqual('thread-123');
