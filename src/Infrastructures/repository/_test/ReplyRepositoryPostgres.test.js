@@ -168,8 +168,17 @@ describe('ReplyRepositoryPostgres', () => {
 
       // Assert
       expect(replies).toHaveLength(2);
+      expect(replies[0].id).toEqual('reply-123');
       expect(replies[0].content).toEqual('sebuah balasan');
+      expect(replies[0].username).toEqual('dicoding');
+      expect(replies[0].date).toBeInstanceOf(Date);
+      expect(replies[0].is_delete).toEqual(false);
+
+      expect(replies[1].id).toEqual('reply-456');
       expect(replies[1].content).toEqual('**balasan telah dihapus**');
+      expect(replies[1].username).toEqual('dicoding');
+      expect(replies[1].date).toBeInstanceOf(Date);
+      expect(replies[1].is_delete).toEqual(true);
     });
   });
 });

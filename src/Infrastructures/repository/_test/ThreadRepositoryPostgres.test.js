@@ -93,6 +93,9 @@ describe('ThreadRepositoryPostgres', () => {
 
       // Arrange
       expect(thread.id).toEqual('thread-123');
+      expect(thread.title).toEqual('sebuah judul');
+      expect(thread.body).toEqual('sebuah body');
+      expect(thread.date).toBeInstanceOf(Date);
       expect(thread.username).toEqual('dicoding');
     });
   });

@@ -6,7 +6,8 @@ class GetCommentsEntity {
     this.id = payload.id;
     this.username = payload.username;
     this.date = payload.date;
-    if (payload.is_delete) {
+    this.is_delete = payload.is_delete;
+    if (this.is_delete) {
       this.content = '**komentar telah dihapus**';
     } else {
       this.content = payload.content;

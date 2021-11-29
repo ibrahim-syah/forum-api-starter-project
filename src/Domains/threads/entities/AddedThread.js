@@ -10,6 +10,9 @@ class AddedThread {
   }
 
   _verifyPayload({ id, title, owner }) {
+    // console.log(id);
+    // console.log(title);
+    // console.log(owner);
     if (!id || !title || !owner) {
       throw new Error('ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
     }

@@ -205,6 +205,7 @@ describe('/threads endpoint', () => {
       headers: { Authorization: `Bearer ${responseAuthJson.data.accessToken}` },
     });
     const responseAddCommentJson = JSON.parse(responseAddComment.payload);
+    const commentId = responseAddCommentJson.data.addedComment.id;
 
     // add another comment on the same thread
     const responseAddComment2 = await server.inject({
@@ -224,7 +225,18 @@ describe('/threads endpoint', () => {
       url: `/threads/${threadId}/comments/${comment2Id}`,
       headers: { Authorization: `Bearer ${responseAuthJson.data.accessToken}` },
     });
-    const responseDeleteCommentJson = JSON.parse(responseDeleteComment.payload);
+
+    // add reply to second comment
+    const responseAddReply = await server.inject({
+      method: 'POST',
+      url: `/threads/${threadId}/comments/${comment2Id}/replies`,
+      payload: {
+        content: 'sebuah balasan',
+      },
+      headers: { Authorization: `Bearer ${responseAuthJson.data.accessToken}` },
+    });
+    const responseAddReplyJson = JSON.parse(responseAddReply.payload);
+    const replyId = responseAddReplyJson.data.addedReply.id;
 
     // Action
     const response = await server.inject({
@@ -236,7 +248,26 @@ describe('/threads endpoint', () => {
     // Assert
     expect(responseJson.data.thread).toBeDefined();
     expect(responseJson.data.thread.id).toEqual(threadId);
+    expect(responseJson.data.thread.title).toEqual('sebuah judul');
+    expect(responseJson.data.thread.body).toEqual('sebuah body');
+    expect(responseJson.data.thread.date).toBeDefined();
+    expect(responseJson.data.thread.username).toEqual('dicoding');
+
     expect(responseJson.data.thread.comments).toHaveLength(2);
+    expect(responseJson.data.thread.comments[0].id).toEqual(commentId);
+    expect(responseJson.data.thread.comments[0].username).toEqual('dicoding');
+    expect(responseJson.data.thread.comments[0].date).toBeDefined();
+    expect(responseJson.data.thread.comments[0].content).toEqual('sebuah komentar');
+
+    expect(responseJson.data.thread.comments[1].id).toEqual(comment2Id);
+    expect(responseJson.data.thread.comments[1].username).toEqual('dicoding');
+    expect(responseJson.data.thread.comments[1].date).toBeDefined();
     expect(responseJson.data.thread.comments[1].content).toEqual('**komentar telah dihapus**');
+
+    expect(responseJson.data.thread.comments[1].replies).toHaveLength(1);
+    expect(responseJson.data.thread.comments[1].replies[0].id).toEqual(replyId);
+    expect(responseJson.data.thread.comments[1].replies[0].username).toEqual('dicoding');
+    expect(responseJson.data.thread.comments[1].replies[0].date).toBeDefined();
+    expect(responseJson.data.thread.comments[1].replies[0].content).toEqual('sebuah balasan');
   });
 });

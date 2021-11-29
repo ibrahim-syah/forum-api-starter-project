@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const GetCommentsEntity = require('../GetCommentsEntity');
 
 describe('a GetCommentsEntity entity', () => {
@@ -37,7 +38,7 @@ describe('a GetCommentsEntity entity', () => {
 
     // Action
     const {
-      id, content, username, date,
+      id, content, username, date, is_delete,
     } = new GetCommentsEntity(payload);
 
     // Assert
@@ -45,6 +46,7 @@ describe('a GetCommentsEntity entity', () => {
     expect(username).toEqual(payload.username);
     expect(date).toEqual(payload.date);
     expect(content).toEqual(payload.content);
+    expect(is_delete).toEqual(false);
   });
 
   it('set content to **komentar telah dihapus** if is_delete is true', () => {
@@ -59,7 +61,7 @@ describe('a GetCommentsEntity entity', () => {
 
     // Action
     const {
-      id, content, username, date,
+      id, content, username, date, is_delete,
     } = new GetCommentsEntity(payload);
 
     // Assert
@@ -67,5 +69,6 @@ describe('a GetCommentsEntity entity', () => {
     expect(username).toEqual(payload.username);
     expect(date).toEqual(payload.date);
     expect(content).toEqual('**komentar telah dihapus**');
+    expect(is_delete).toEqual(true);
   });
 });

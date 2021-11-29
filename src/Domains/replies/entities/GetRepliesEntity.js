@@ -4,7 +4,8 @@ class GetRepliesEntity {
     this._verifyPayload(payload);
 
     this.id = payload.id;
-    if (payload.is_delete) {
+    this.is_delete = payload.is_delete;
+    if (this.is_delete) {
       this.content = '**balasan telah dihapus**';
     } else {
       this.content = payload.content;
